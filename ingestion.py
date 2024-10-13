@@ -6,7 +6,6 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Pinecone
 
 load_dotenv()
-
 embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
 
 def get_html_files(directory):
@@ -20,9 +19,7 @@ def get_html_files(directory):
 def ingest_docs():
     html_files = get_html_files("langchain-docs")
     print(f"Found {len(html_files)} HTML files")
-
     raw_documents = []
-
     for html_file in html_files:
         try:
             loader = UnstructuredHTMLLoader(html_file)
@@ -36,7 +33,6 @@ def ingest_docs():
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=50)
     documents = text_splitter.split_documents(raw_documents)
     print(f"Split into {len(documents)} documents")
-
     for doc in documents:
         new_url = doc.metadata.get("source", "")
         if new_url:
